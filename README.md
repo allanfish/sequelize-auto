@@ -33,34 +33,26 @@ Produces a file/files such as ./models/Users.js which looks like:
     module.exports = function(sequelize, DataTypes) {
       return sequelize.define('Users', {
         username: {
+          field: 'username',
           type: DataTypes.STRING,
           allowNull: true,
           defaultValue: null
         },
-        touchedAt: {
-          type: DataTypes.DATE,
-          allowNull: true,
-          defaultValue: null
-        },
         aNumber: {
+          field: 'a_number',
           type: DataTypes.INTEGER,
           allowNull: true,
           defaultValue: null
         },
         id: {
+          field: 'id',
           type: DataTypes.INTEGER,
           primaryKey: true
-        },
-        createdAt: {
-          type: DataTypes.DATE,
-          allowNull: false,
-          defaultValue: null
-        },
-        updatedAt: {
-          type: DataTypes.DATE,
-          allowNull: false,
-          defaultValue: null
         }
+      } , {
+        tableName: 'users',
+        timestamps: false,
+        freezeTableName: true
       });
     };
 
