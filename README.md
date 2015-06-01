@@ -6,7 +6,7 @@ Automatically generate models for [SequelizeJS](https://github.com/sequelize/seq
 
 ## Install
 
-    npm install -g sequelize-auto
+    npm install -g ymyang/sequelize-auto
 
 ## Usage
 
