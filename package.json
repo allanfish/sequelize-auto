@@ -1,6 +1,6 @@
 {
   "name": "sequelize-gen",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Automatically generate bare sequelize models from your database.",
   "main": "index",
   "keywords": [
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sequelize/sequelize-auto.git"
+    "url": "https://github.com/ymyang/sequelize-auto.git"
   },
   "bugs": {
     "url": "https://github.com/sequelize/sequelize-auto/issues"
@@ -30,7 +30,7 @@
   "engines": {
     "node": ">=0.4.6"
   },
-  "author": "Daniel Durante <me@danieldurante.com>",
+  "author": "ymyang",
   "license": "MIT",
   "dependencies": {
     "sequelize": "~1.7.0-alpha2",
