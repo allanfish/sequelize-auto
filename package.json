@@ -1,6 +1,6 @@
 {
-  "name": "sequelize-auto",
-  "version": "0.0.7",
+  "name": "sequelize-gen",
+  "version": "1.0.0",
   "description": "Automatically generate bare sequelize models from your database.",
   "main": "index",
   "keywords": [
@@ -11,7 +11,7 @@
     "mapper"
   ],
   "bin": {
-    "sequelize-auto": "bin/sequelize-auto"
+    "sequelize-auto": "bin/sequelize-gen"
   },
   "repository": {
     "type": "git",
