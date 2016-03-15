@@ -6,11 +6,11 @@ Automatically generate models for [SequelizeJS](https://github.com/sequelize/seq
 
 ## Install
 
-    npm install -g ymyang/sequelize-auto
+    npm install -g sequelize-gen
 
 ## Usage
 
-    sequelize-auto -h <host> -d <database> -u <user> -x [password] -p [port]  --dialect [dialect] -c [/path/to/config] -o [/path/to/models]
+    sequelize-gen -h <host> -d <database> -u <user> -x [password] -p [port]  --dialect [dialect] -c [/path/to/config] -o [/path/to/models]
 
     Options:
       -h, --host      IP/Hostname for the database.                                      [required]
@@ -24,7 +24,7 @@ Automatically generate models for [SequelizeJS](https://github.com/sequelize/seq
 
 ## Example
 
-    sequelize-auto -o "./models" -d sequelize_auto_test -h localhost -u daniel -p 5432 -x my_password -e postgres
+    sequelize-gen -o "./models" -d sequelize_auto_test -h localhost -u daniel -p 5432 -x my_password -e postgres
 
 Produces a file/files such as ./models/Users.js which looks like:
 
