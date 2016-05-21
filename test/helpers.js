@@ -1,9 +1,7 @@
-// https://raw.github.com/sequelize/sequelize/master/spec/buster-helpers.js
 var Sequelize = require('sequelize')
-    , config    = require(__dirname + "/config")
-    , DataTypes = require(__dirname + '/../node_modules/sequelize/lib/data-types')
-    , fs        = require('fs')
-    , buster    = require("buster")
+  , path      = require('path')
+  , config    = require(path.join(__dirname, "config"))
+  , fs        = require('fs');
 
 module.exports = {
   Sequelize: Sequelize,
@@ -17,11 +15,11 @@ module.exports = {
       }
 
       if (options.beforeComplete) {
-        options.beforeComplete(sequelize, DataTypes)
+        options.beforeComplete(sequelize)
       }
 
       if (options.onComplete) {
-        options.onComplete(sequelize, DataTypes)
+        options.onComplete(sequelize)
       }
     })
   },
@@ -37,6 +35,9 @@ module.exports = {
       dialect: options.dialect,
       port:    config[options.dialect].port
     }
+
+    if (config[options.dialect] && config[options.dialect].storage)
+      sequelizeOptions.storage = config[options.dialect].storage
 
     if (process.env.DIALECT === 'postgres-native') {
       sequelizeOptions.native = true
@@ -54,24 +55,29 @@ module.exports = {
     sequelize
       .getQueryInterface()
       .dropAllTables()
-      .success(function() {
-        sequelize.daoFactoryManager.daos = []
-        fs.readdir(config.directory, function(err, files){
-          if (!files || files.length < 1)
-            return callback && callback()
-          files.forEach(function(file){
-            var stat = fs.statSync(config.directory + '/' + file);
-            if (stat.isFile())
-              fs.unlinkSync(config.directory + '/' + file);
-          });
-          callback && callback()
-        });
+      .then(success, error)
+
+    function success() {
+      fs.readdir(config.directory, function (err, files) {
+        if (err || ! files || files.length < 1)
+          return callback && callback()
+
+        files.forEach(function (file) {
+          var stat = fs.statSync(config.directory + '/' + file);
+          if (stat.isFile())
+            fs.unlinkSync(config.directory + '/' + file);
+        })
+        callback && callback()
       })
-      .error(function(err) { console.log(err) })
+    }
+
+    function error(err) {
+      throw err;
+    }
   },
 
   getSupportedDialects: function() {
-    return fs.readdirSync(__dirname + '/../node_modules/sequelize/lib/dialects').filter(function(file) {
+    return fs.readdirSync(path.join(__dirname, '..', 'node_modules', 'sequelize', 'lib', 'dialects')).filter(function(file) {
       return ((file.indexOf('.js') === -1) && (file.indexOf('abstract') === -1))
     })
   },
@@ -79,13 +85,11 @@ module.exports = {
   getTestDialect: function() {
     var envDialect = process.env.DIALECT || 'mysql'
 
-    if (envDialect === 'postgres-native') {
+    if (envDialect === 'postgres-native')
       envDialect = 'postgres'
-    }
 
-    if (this.getSupportedDialects().indexOf(envDialect) === -1) {
+    if (this.getSupportedDialects().indexOf(envDialect) === -1)
       throw new Error('The dialect you have passed is unknown. Did you really mean: ' + envDialect)
-    }
 
     return envDialect
   },
@@ -101,19 +105,10 @@ module.exports = {
   },
 
   checkMatchForDialects: function(dialect, value, expectations) {
-    if (!!expectations[dialect]) {
+    if (expectations.hasOwnProperty(dialect)) {
       expect(value).toMatch(expectations[dialect])
     } else {
       throw new Error('Undefined expectation for "' + dialect + '"!')
-    }
-  },
-
-  assertException: function(block, msg) {
-    try {
-      block()
-      throw new Error('Passed function did not throw an error')
-    } catch(e) {
-      buster.assert.equals(e.message, msg)
     }
   }
 }
